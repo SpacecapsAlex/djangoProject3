@@ -1,5 +1,8 @@
 from django.db import models
 
+from projects.models import Project
+
+
 # Create your models here.
 
 
@@ -23,3 +26,6 @@ class Post(models.Model):
 class Comment(models.Model):
     text = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
+

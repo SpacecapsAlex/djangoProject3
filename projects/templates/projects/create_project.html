@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Project</title>
+</head>
+<body>
+    <h1>Create Project</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+
+        <hr />
+
+{#        <input type="text" name="ex">#}
+{#        <input type="text" name="ex">#}
+{#        <input type="text" name="ex">#}
+{#        <input type="number" name="ex">#}
+
+        <select name="users" multiple size="5">
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.name }}</option>
+            {% endfor %}
+        </select>
+
+{#        <br />#}
+{#        {% for user in users %}#}
+{#            <input type="checkbox" name="users" value="{{ user.id }}" />{{ user.name }}<br/>#}
+{#        {% endfor %}#}
+        <input type="submit" value="Create Project" />
+    </form>
+</body>
+</html>

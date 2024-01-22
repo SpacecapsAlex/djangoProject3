@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+
+from projects.models import Project
 from .models import User, Post, Comment
 
 
@@ -8,8 +10,22 @@ from .models import User, Post, Comment
 def index(request):
     # пагинация - разбиение на страницы
     number_of_elements = 10
-    users = User.objects.all()[: number_of_elements]  # пропустить 1 элемент с начала и взять 3 элемента
-    return HttpResponse(users)
+    users = User.objects.raw('''
+        SELECT * FROM example_user
+        ''')
+
+    user_id = 10
+    user_projects = Project.objects.raw(f'''
+        SELECT * FROM projects_project
+        WHERE id IN (
+            SELECT project_id FROM projects_project_users
+            WHERE user_id = {user_id}
+        )
+        ''')
+
+    # data = list(users.values())
+    # users = User.objects.all()[: number_of_elements]  # пропустить 1 элемент с начала и взять 3 элемента
+    return HttpResponse(user_projects)
 
 
 def create(request):
@@ -37,7 +53,7 @@ def edit(request):
 def delete(request):
     user = User.objects.filter(name='Tom').exists()
     if user:
-        User.objects.filter(name='Tom')
+        User.objects.filter(name='Tom').delete()
     return HttpResponse('delete')
 
 
